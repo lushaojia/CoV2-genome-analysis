@@ -64,9 +64,9 @@ Because a protein’s amino acid sequencing determines its tertiary/quaternary s
         - each value is an `Array` of **matching/mismatching protein subsequence(s)** as `Strings`
         - each key is a **3-element** `Tuple` with **1)** whether it is a “Match” or “Mismatch”, **2)** the corresponding position(s) of the subsequence as a string, and **3)** the length of this subsequence as an `Int`
     
- > Note: If the residue subsequences are a match, the value Array will contain 1 String, if they are a mismatch, the Array will contain 2 Strings
+    > Note 1: If the residue subsequences are a match, the value Array will contain 1 String, if they are a mismatch, the Array will contain 2 Strings
 
-> Note: for example, given an `alignedSeq` of (MES`LV`PGFNEKTH`V`QLS, MES`--`PGFNEKTH`A`QLS), `mis_matchSubsequences(alignedSeq)` returns {(“Match”, “1-3”, 3)=>[“MES”]; (“Mismatch”, “4-5”, 2)=>[“LV”, “--”]; (“Match”, “6-13”, 8)=>[“PGFNEKTH”]; (“Mismatch”, “14”, 1)=>[“V”, “A”]; (“Match”, “15-17”, 3)=>[“QLS”]}
+    > Note 2: for example, given an `alignedSeq` of (MES`LV`PGFNEKTH`V`QLS, MES`--`PGFNEKTH`A`QLS), `mis_matchSubsequences(alignedSeq)` returns {(“Match”, “1-3”, 3)=>[“MES”]; (“Mismatch”, “4-5”, 2)=>[“LV”, “--”]; (“Match”, “6-13”, 8)=>[“PGFNEKTH”]; (“Mismatch”, “14”, 1)=>[“V”, “A”]; (“Match”, “15-17”, 3)=>[“QLS”]}
 
 #
 ## Q2: Is there a correlation between the distance between the location of where a SARS-CoV2 sample was collected and the location of the earliest reported COVID case in the U.S. (Seattle, WA) and the number of genomic residue mismatches? If so, is the correlation positive or negative? (i.e. positive = the farther away from Seattle, WA a sample is collected, the more different the SARS-CoV2 genomes are)
