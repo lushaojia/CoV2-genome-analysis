@@ -77,10 +77,11 @@ Because a protein’s amino acid sequencing determines its tertiary/quaternary s
 
 - **Julia function(s) utilized:**
     - `Unique Kmers function`
-        > Will need to run this function twice for every State for a total of 100 times
-        - Input 1st time: SARS-CoV2 genomic sequence from State A
-        - Input 2nd time: the first SARS-CoV2 genomic sequence ever collected in Seattle, WA on January 21, 2020 
+        > Will need to run this function once for every State sample and once for the Seattle, WA sample 
+        - Input (x 50): SARS-CoV2 genomic sequence from State A, B, C, D, E, ...
+        - Input: the first SARS-CoV2 genomic sequence ever collected in Seattle, WA on January 21, 2020 
     - `Kmer set distance function`
+        > will need to run this function 50 times to generate 50 distance metrics between each State sample and the Seattle, WA sample
         - Inputs: kmer sets from the SARS-CoV2 genome collected from a single sample in State A and the first sample ever collected in Seattle, WA on January 21, 2020 
 - **Method(s) for data visualization:**
     - A **statistical dot plot** of **50 data pairs**, where each data pair consists of 
