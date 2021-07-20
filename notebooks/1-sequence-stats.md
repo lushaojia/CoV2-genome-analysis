@@ -54,7 +54,7 @@ using Plots
 genome_lengths = [length(seq) for seq in genomes[2]]
 
 # making a histogram to display counts of genome lengths: 
-histogram(genome_lengths, legend = false, xlabel="genome length (# of basepairs)", ylabel="count", nbins=10^5)
+histogram(genome_lengths, legend = false, xlabel="genome length (# of basepairs)", ylabel="count", nbins=10^5, title = "Distribution of Mean Lengths of Different SARS-Related Coronavirus Genomes\n(With Sequences<25k Basepairs)", titlefontsize=9)
 ```
 The cluster of bars on the far left of the graph confirms the prediction above; there are quite a few genomes with lengths less than (approximately) 5000 basepairs.
 
@@ -71,6 +71,6 @@ genomes_cleaned = removeUnder25k(genomes)
 genomes_lengths_cleaned = [length(seq) for seq in genomes_cleaned[2]]
 
 # making a new histogram with the cleaned data to display counts of genome lengths:
-histogram(genomes_lengths_cleaned, legend = false, xlabel="genome length (# of basepairs)", ylabel="count", nbins=400)
+histogram(genomes_lengths_cleaned, legend = false, xlabel="genome length (# of basepairs)", ylabel="count", nbins=400, title = "Distribution of Mean Lengths of Different Coronavirus Genomes\n(All Sequences>25k Basepairs)", titlefontsize = 9)
 ```
 Now, the cluster of bars on the far left of the histogram are gone. The distribution of counts of genome lengths is now fairly normal. 
