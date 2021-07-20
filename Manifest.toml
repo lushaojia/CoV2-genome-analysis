@@ -41,7 +41,7 @@ version = "4.0.4"
 
 [[BioinformaticsBISC195]]
 deps = ["BioSequences"]
-path = "../my_repo/BioinformaticsBISC195"
+path = "../BioinformaticsBISC195.jl"
 uuid = "67893044-1481-44cf-8ab6-de350e09ee4e"
 version = "0.1.0"
 
