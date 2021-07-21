@@ -49,6 +49,7 @@ z = alignmentHeatmap(aligned[1], aligned[2])
 ```julia
 using Plots
 
+
 heatmap(x, y, z, xmirror = true, yflip = true, color = cgrad([:white, :black]),
     xlabel = "Residues of CoV2 Surface Glycoprotein",
     ylabel = "Residues of CoV Spike Glycoprotein")
@@ -57,3 +58,109 @@ heatmap(x, y, z, xmirror = true, yflip = true, color = cgrad([:white, :black]),
   we can see that the CoV spike glycoprotein and CoV2 surface glycoprotein are extremely similar in sequencing,
   as the diagonal line going from the origin to the bottom right corner
   is easily discernible with only a few faint and broken regions in the middle
+
+heatmap(x, y, z, xmirror = true, yflip = true, color = cgrad([:white, :black]), xlabel = "Residues of CoV2 Surface Glycoprotein", ylabel = "Residues of CoV Spike Glycoprotein", title = "Bioinformatics Dot Plot\nComparing Different Coronaviruses' S Glycoprotein Sequence\n ", titlefontsize = 12, labelpadding = 2.0)
+```
+- From the heatmap/bioinformatics dot-plot above, we can see that the CoV spike glycoprotein and CoV2 surface glycoprotein are extremely similar in sequencing, as the diagonal line going from the origin to the bottom right corner is easily discernible with only a few faint and broken regions in the middle
+
+#
+```julia
+mis_match_stats = mis_matchSeq(aligned)
+Dict{String, Any} with 3 entries:
+  "Mis/Match%" => (0.767513, 0.232487)
+  "Mismatch#"  => 302
+  "Match#"     => 997
+```
+```julia
+labels = ["Match", "Mismatch"]
+counts = [mis_match_stats["Match#"], mis_match_stats["Mismatch#"]]
+percentages = [(string(mis_match_stats["Mis/Match%"][1]*100)[1:4] * "%"), (string(mis_match_stats["Mis/Match%"][2]*100)[1:4] * "%")]
+ratios = [mis_match_stats["Mis/Match%"][1], mis_match_stats["Mis/Match%"][2]]
+```
+```julia
+using DataFrames
+
+df_residue_alignment = DataFrame(Category=labels, Counts=counts, Ratios = ratios, Percentages=percentages)
+2×4 DataFrame
+ Row │ Category  Counts  Ratios    Percentages 
+     │ String    Int64   Float64   String      
+─────┼─────────────────────────────────────────
+   1 │ Match        997  0.767513  76.7%
+   2 │ Mismatch     302  0.232487  23.2%
+```
+```julia
+df_residue_alignment |> 
+@vlplot(:arc, theta={:Counts, stack=true}, color= {"Category:n"}, view={stroke=nothing}, title= {text = "Relative Proportions of Matching and Matching Residues in Protein Sequences", subtitle = "CoV Spike Protein and CoV2 Surface Protein"}) + 
+@vlplot(mark={:arc, outerRadius=80}) + 
+@vlplot(mark={:text, radius=95}, text="Percentages:n")
+```
+```julia
+bar([(labels[1], counts[1]), (labels[2], counts[2])], legend = false, bar_width = .5, xlabel = "Residue Alignment", ylabel = "# of Residues", title = "Counts of Matching and Mismatching Residue Alignment Of\nCoV Spike Glycoprotein and CoV2 Surface Glycoprotein\n ", titlefontsize = 12)
+```
+
+```julia
+subsequences_stats = mis_matchSubsequences(aligned)
+395-element Vector{Any}:
+ AlignmentSubsequences("match", 1:2, ["MF"])
+ AlignmentSubsequences("mismatch", 3:3, ["I", "V"])
+ AlignmentSubsequences("match", 4:5, ["FL"])
+ AlignmentSubsequences("mismatch", 6:6, ["-", "V"])
+ AlignmentSubsequences("match", 7:7, ["L"])
+ AlignmentSubsequences("mismatch", 8:8, ["F", "-"])
+ ⋮
+ AlignmentSubsequences("match", 1243:1258, ["WLGFIAGLIAIVMVTI"])
+ AlignmentSubsequences("mismatch", 1259:1259, ["L", "M"])
+ AlignmentSubsequences("match", 1260:1272, ["LCCMTSCCSCLKG"])
+ AlignmentSubsequences("mismatch", 1273:1273, ["A", "C"])
+ AlignmentSubsequences("match", 1274:1299, ["CSCGSCCKFDEDDSEPVLKGVKLHYT"])
+```
+
+```julia
+count(item->(item.type=="match" && length(item.sequences[1])>20), subsequences_stats)
+6
+```
+
+
+```julia
+begin 
+    match_20_up_arr = []
+    for subseq in subsequences_stats
+        if subseq.type=="match" && length(subseq.sequences[1])>20
+            push!(match_20_up_arr, (subseq.positions, subseq.sequences[1]))
+            @info subseq.positions
+            @info subseq.sequences[1]
+        end
+    end
+    return match_20_up_arr
+end
+
+6-element Vector{Any}:
+ (871:892, "ARDLICAQKFNGLTVLPPLLTD")
+ (910:946, "GWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQK")
+ (970:1080, "ALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQ")
+ (1138:1158, "PQIITTDNTFVSGNCDVVIGI")
+ (1160:1241, "NNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWY")
+ (1274:1299, "CSCGSCCKFDEDDSEPVLKGVKLHYT")
+```
+| Positions      | Sequences |
+| ----------- | ----------- |
+| 871:892      | ARDLICAQKFNGLTVLPPLLTD       |
+| 910:946   | GWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQK        |
+| 970:1080   | ALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRL
+| |QSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQ        |
+| 1138:1158   | PQIITTDNTFVSGNCDVVIGI        |
+| 1160:1241   | NNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWY        |
+| 1274:1299   | CSCGSCCKFDEDDSEPVLKGVKLHYT        |
+```julia
+df_subsequence_match_20up = DataFrame(Positions = [i[1] for i in match_20_up_arr], Sequences = [i[2] for i in match_20_up_arr])
+6×2 DataFrame
+ Row │ Positions  Sequences                         
+     │ UnitRang…  String                            
+─────┼──────────────────────────────────────────────
+   1 │ 871:892    ARDLICAQKFNGLTVLPPLLTD
+   2 │ 910:946    GWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQK
+   3 │ 970:1080  ALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQ  
+   4 │ 1138:1158  PQIITTDNTFVSGNCDVVIGI
+   5 │ 1160:1241  NNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWY
+   6 │ 1274:1299  CSCGSCCKFDEDDSEPVLKGVKLHYT
+```
