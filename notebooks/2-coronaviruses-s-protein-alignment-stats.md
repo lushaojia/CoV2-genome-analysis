@@ -130,8 +130,15 @@ To visualize the **counts** of positions with (mis)matching residues in the alig
 ```julia
 using Plots 
 
-bar([(labels[1], counts[1]), (labels[2], counts[2])], legend = false, bar_width = .5, xlabel = "Residue Alignment", ylabel = "# of Residues", title = "Counts of Matching and Mismatching Residue Alignment Of\nCoV Spike Glycoprotein and CoV2 Surface Glycoprotein\n ", titlefontsize = 12)
+bar([(labels[1], counts[1]), (labels[2], counts[2])], 
+    legend = false, 
+    bar_width = .5, 
+    xlabel = "Residue Alignment", 
+    ylabel = "# of Residues", 
+    title = "Counts of Matching and Mismatching Residue Alignment Of\nCoV Spike Glycoprotein and CoV2 Surface Glycoprotein\n ", 
+    titlefontsize = 12)
 ```
+***
 Looking at the data table, bar chart, and pie graph from above, we see that nearly 80% of the two glycoproteins' residues (nearly 1,000 out of the total ~1,300 residues) are identical at the same positions. This shows that the SARS-CoV and SARS-CoV2 spike / surface glycoproteins' primary sequences are predominantly the same, from which we can infer that the two glycoproteins are also similar in three-dimensional structure and therefore in functional properties. 
 ***
 ### 5. Determining Any Matching Subsequences Longer Than 20 Residues In the Aligned Glycoprotein Sequences
