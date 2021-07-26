@@ -5,7 +5,7 @@ In this analysis, it is referred to as the "origin".
 * * *
 ## Goals & Hypothesis:
 To run a linear regression on the distance between two sets of data 
-1. Distance between the location where a SARS-CoV2 sample was collected (covering all 50 States and including Puerto Rico) and Seattle, Washington 
+1. Distance between the location where a SARS-CoV2 sample was collected (covering all 50 States and Puerto Rico) and Seattle, Washington 
 2. Distance metrics generated from the genomic sequencing of SARS-CoV2 samples scattered across the country and that of the earliest reported U.S. COVID-19 case
 
 
@@ -106,7 +106,7 @@ Now that the distance metrics and the distance between geo locations of samples 
 whether the two **positively correlate / negatively correlate / do not correlate** 
 with each other. 
 
-We shall accomplish this by building a linear regression model.
+We shall accomplish this by running a linear regression.
 
 ```julia
 using DataFrames
@@ -133,11 +133,11 @@ extent to which these samples differ genetically from each other.
 * * *
 ### 6. Scatterplot
 Looking at the scatterplot below, we can see that there exists a faint, positive correlation between the independent and dependent variables, 
-as the individual data points fluctuate drastically above and below the line of best fit. 
+as the individual data points are spread haphazardly above and below the line of best fit. 
 
-The lack of uniformity in the individual data points' distribution across the graph further confirms my analyses of the p-value from above: while a linear model with a slight positive slope could explain the data at hand, it may not be the best one.
+The lack of uniformity in the individual data points' distribution across the graph further confirms my analyses of the p-value from above: while a linear model with a slightly positive slope could explain the data at hand, it may not be the best one.
 
-I did not explicitly calculate this, but I predict that the sum of squared residuals is relatively large as most data points are quite some vertical distance away from the line of best which. This would further indicate that the proposed model does not explain the data exceptionally well.
+I did not explicitly calculate this, but I predict that the sum of squared residuals is relatively large as most data points are quite some vertical distance away from the line of best fit. This would further indicate that the proposed model does not explain the data exceptionally well.
  
 On the other hand, the linear model's positive slop of 3.64063e-7 indicates that 
 there is *some* positive correlation between the variables despite the fact that it may not be statistically significant.  
@@ -155,7 +155,7 @@ plot!(f, label = "Line of Best Fit")
 ```
 * * *
 ### Conclusion
-Briefly put, the above analyses suggest that there is a faint, positive correlation between the distance from the location of where a SARS-CoV2 sample was collected to the origin and the extent to which the SARS-CoV2 from the samples differ genetically. In other words, the farther away from the origin a sample is at the time of its collection, the more different it is genetically from the SARS-CoV2 that started the outbreak in the U.S.
+Briefly put, the above analyses suggest that there is a faint, positive correlation between the distance from the location of where a SARS-CoV2 sample was collected to the origin and the extent to which the samples differ genetically from that of the earliest reported U.S. COVID-19 case. In other words, the farther away from the origin a sample is at the time of its collection, the more different it is genetically from the SARS-CoV2 that started the outbreak in the U.S.
 
 
 
